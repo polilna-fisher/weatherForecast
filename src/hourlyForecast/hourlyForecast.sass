@@ -1,0 +1,17 @@
+@import "../styles/variables"
+.hourly_container
+  max-width: 1110px
+  width: 100%
+  min-height: 336px
+  height: 100%
+  padding: 30px
+  background-color: $lightColor
+  border-radius: 30px
+  display: flex
+  justify-content: space-between
+  gap: 5px
+  @include containerShadow
+
+@media (max-width: $thirdMedia)
+  .hourly_container
+    padding: 17px

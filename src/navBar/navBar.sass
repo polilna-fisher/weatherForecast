@@ -1,0 +1,45 @@
+@import "../styles/variables"
+.nav
+  &_container
+    max-width: 198px
+    width: 100%
+    padding: 35px 15px
+    border: 1px solid black
+  &_header
+    font-size: 22px
+    @include boldFontStyle
+    line-height: 40px
+    text-align: left
+    margin-top: 10px
+    margin-bottom: 10px
+    &_current_location
+      font-size: 30px
+      @include middleFontStyle
+      line-height: 40px
+      margin-top: 10px
+      margin-bottom: 20px
+      text-align: center
+      cursor: pointer
+  &_item
+    &_container
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 10px
+    &_city_name
+      font-size: 17px
+      @include middleFontStyle
+      text-align: left
+      cursor: pointer
+    &_icon_selected
+      width: 20px
+      height: 20px
+
+.text_shadow
+  text-shadow: 2px 2px 2px black, 0 0 1em $greenColor, 0 0 0.2em $greenColor
+  color: #ffffff
+  font: 1.5em Heebo, sans-serif
+
+@media (max-width: $thirdMedia)
+  .nav_container
+    display: none

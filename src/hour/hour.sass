@@ -1,0 +1,26 @@
+@import "../styles/variables"
+.hour
+  &_weather_icon
+    width: 60px
+    height: 60px
+  &_item
+    display: flex
+    flex-direction: column
+    gap: 5px
+    justify-content: space-between
+    align-items: center
+    font-size: 17px
+    @include middleFontStyle
+    padding: 15px 3px
+    border-radius: 20px
+    max-width: 78px
+    width: 100%
+    &_header
+      font-weight: bold
+
+@media (max-width: $secondMedia)
+  .hour_item
+    max-width: 51px
+  .hour_weather_icon
+    width: 48px
+    height: 48px

@@ -1,0 +1,7 @@
+.App {
+  text-align: center;
+  background: rgb(255,255,255);
+  background: linear-gradient(90deg, rgba(255,255,255,1) 10%, rgba(115,111,111,1) 100%);
+  font-family: Heebo, sans-serif;
+  display: flex;
+}

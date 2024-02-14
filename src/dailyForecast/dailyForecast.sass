@@ -1,0 +1,76 @@
+@import "../styles/variables"
+.daily
+  &_container
+    max-width: 616px
+    width: 100%
+    min-height: 330px
+    height: 100%
+    padding: 30px
+    background-color: $lightColor
+    border-radius: 30px
+    display: flex
+    gap: 10px
+    justify-content: space-between
+    @include containerShadow
+    &_left
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+    &_center
+      flex-direction: column
+      @include flexContainer
+    &_right
+      display: flex
+      flex-wrap: wrap
+      gap: 10px
+      justify-content: space-between
+
+.temperature
+  font-size: 53px
+  font-family: Heebo, sans-serif
+  font-weight: 1000
+  line-height: 40px
+  padding-bottom: 5px
+  &_feels
+    font-size: 17px
+    @mixin middleFontStyle
+    padding-bottom: 5px
+    &_degrees
+      font-weight: bold
+
+.sun
+  &_container
+    display: flex
+    align-items: center
+    gap: 15px
+    margin-top: 15px
+  &_name
+    font-size: 18px
+    @include boldFontStyle
+    padding-bottom: 5px
+    margin-bottom: 5px
+  &time
+    font-size: 18px
+    @include middleFontStyle
+    padding-bottom: 5px
+
+.weather
+  &_icon
+    width: 206px
+    height: 206px
+  &_description
+    font-size: 30px
+    @include boldFontStyle
+    margin-bottom: 7px
+  &_item
+    max-width: 84px
+    width: 100%
+    @include flexContainer
+    flex-direction: column
+    gap: 7px
+    font-size: 15px
+    @include middleFontStyle
+    margin-bottom: 7px
+    &_img
+      height: 50px
+      width: 60px

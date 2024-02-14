@@ -1,0 +1,23 @@
+@import "../styles/variables"
+.main_container
+  max-width: 1250px
+  padding: 62px 70px
+  margin: 0 auto
+  display: flex
+  flex-direction: column
+  gap: 10px
+  &_top
+    display: flex
+    gap: 10px
+
+@media (max-width: $fistsMedia)
+  .main_container_top
+      flex-direction: column
+      margin: 0 auto
+@media (max-width: $thirdMedia)
+  .main_container
+    max-width: 729px
+@media (max-width: $fourthMedia)
+  .main_container
+    max-width: 611px
+

@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Roboto:wght@400;500;700&display=swap')
+@import "../styles/variables"
+
+.location
+  &_container
+    max-width: 304px
+    width: 100%
+    min-height: 330px
+    height: 100%
+    padding: 30px
+    background-color: $lightColor
+    border-radius: 30px
+    @include flexContainer
+    flex-direction: column
+    @include containerShadow
+  &_date
+    font-size: 30px
+    @include boldFontStyle
+    line-height: 40px
+    font-style: italic
+    padding-bottom: 30px
+  &_name
+    font-size: 39px
+    @include boldFontStyle
+    line-height: 40px
+    padding-bottom: 30px
+  &_upd
+    font-size: 20px
+    @include boldFontStyle
+    line-height: 40px
+    padding-bottom: 30px
+
+
+@media (max-width: $fistsMedia)
+  .location_container
+    margin: 0 auto
+    max-width: none
