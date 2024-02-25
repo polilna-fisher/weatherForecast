@@ -2,9 +2,17 @@ import './navBar.sass'
 import {cities} from "../utils/cities";
 import StarWhite from './img/star-white.svg'
 import StarYellow from './img/star-yellow.svg'
-import {useRef, useState} from "react";
+import {useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    addOrRemoveFromLocalStorage,
+} from "../actions/action";
 
-const NavBar = ({ currentCity, chosenCity, selectedItems, addSelectedItemToLocalStorage, fetchChosenForecast, fetchCurrentForecast }) => {
+const NavBar = ({ fetchChosenForecast, fetchCurrentForecast }) => {
+    const selectedCitiesList = useSelector(state => state.foreCast.selectedCitiesList)
+    const dispatch = useDispatch()
+    const currentCity = useSelector(state => state.foreCast.currentCity)
+    const city = useSelector(state => state.foreCast.forecast.city)
 
     const onCityClick = (e, item) => {
         e.preventDefault()
@@ -26,9 +34,9 @@ const NavBar = ({ currentCity, chosenCity, selectedItems, addSelectedItemToLocal
                    onClick={(e) => onCurrentCityClick(e)}>{currentCity}</a>
             </div>
             {
-                !!chosenCity && chosenCity !== currentCity && <div>
+                !!city && city !== currentCity && <div>
                     <h3 className='nav_header'>Chosen location: </h3>
-                    <div className='nav_header_current_location'>{ chosenCity }</div>
+                    <div className='nav_header_current_location'>{ city }</div>
                 </div>
             }
 
@@ -37,17 +45,15 @@ const NavBar = ({ currentCity, chosenCity, selectedItems, addSelectedItemToLocal
                 <ul>
                     {
                         cities.map(item => {
-                            if(selectedItems?.includes(item.id)){
-                                console.log(chosenCity, 'chosenCity')
-                                console.log(item.cityName, 'item.cityName')
+                            if(selectedCitiesList?.includes(item.id)){
                                 return(
                                     <li key={item.id} className='nav_item_container'>
                                         <a onClick={(e) => onCityClick(e, item)}
-                                           className={chosenCity===item.label ? 'nav_item_city_name text_shadow' : 'nav_item_city_name'}
+                                           className={city===item.label ? 'nav_item_city_name text_shadow' : 'nav_item_city_name'}
                                         >{item.label}</a>
                                         <img className='nav_item_icon_selected'
-                                             alt='img' src={selectedItems.includes(item.id) ? StarYellow : StarWhite}
-                                             onClick={() => {addSelectedItemToLocalStorage(item.id)}}/>
+                                             alt='img' src={selectedCitiesList.includes(item.id) ? StarYellow : StarWhite}
+                                             onClick={() => dispatch(addOrRemoveFromLocalStorage(item.id))}/>
                                     </li>
                                 )
                             }

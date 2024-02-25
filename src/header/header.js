@@ -3,8 +3,13 @@ import {useState, useMemo, useRef} from "react";
 import {cities} from "../utils/cities";
 import StarWhite from './img/star-white.svg'
 import StarYellow from './img/star-yellow.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {addOrRemoveFromLocalStorage} from "../actions/action";
 
-const Header = ({ addSelectedItemToLocalStorage, selectedItems, fetchChosenForecast }) => {
+const Header = ({ fetchChosenForecast }) => {
+    const dispatch = useDispatch()
+
+    const selectedCitiesList = useSelector(state => state.foreCast.selectedCitiesList)
     const [isListShown, setIsListShown] = useState(false)
     const [inputValue, setInputValue] = useState('')
 
@@ -60,8 +65,8 @@ const Header = ({ addSelectedItemToLocalStorage, selectedItems, fetchChosenForec
                                         listHideAllowed.current = false
                                     }} className='autocomplete_item_star_img'
                                          alt='star'
-                                         src={selectedItems.includes(item.id) ? StarYellow : StarWhite}
-                                         onClick={() => addSelectedItemToLocalStorage(item.id)}
+                                         src={selectedCitiesList.includes(item.id) ? StarYellow : StarWhite}
+                                         onClick={() => dispatch(addOrRemoveFromLocalStorage(item.id))}
                                     />
                                 </div>
 

@@ -1,13 +1,27 @@
 import Hour from "../hour/hour";
 import './hourlyForecast.sass'
+import {useSelector} from "react-redux";
 
-const HourlyForecast = (props) => {
+const HourlyForecast = () => {
+    const {hoursForecast} = useSelector(state =>state.foreCast.forecast)
+
+    const allowedTIme = {
+        '04:00': 1,
+        '06:00': 1,
+        '08:00': 1,
+        '10:00': 1,
+        '12:00': 1,
+        '15:00': 1,
+        '17:00': 1,
+        '19:00': 1,
+        '21:00': 1,
+        '23:00': 1,
+    }
 
     const shortForecast = () => {
-         return  props.hoursForecast?.filter(hour => {
+         return  hoursForecast?.filter(hour => {
              const time = (String(hour?.time)).split(' ')[1]
-              return time === '04:00'|| time === '06:00'|| time === '08:00'|| time === '10:00' || time === '12:00'
-                  || time === '15:00' || time === '17:00' || time === '19:00' || time === '21:00' || time === '23:00'
+              return allowedTIme[time]
         })
 
     }

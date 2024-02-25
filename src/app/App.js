@@ -2,71 +2,65 @@ import './App.css';
 import WholeContent from "../wholeContent/wholeContent";
 import Header from "../header/header";
 import NavBar from "../navBar/navBar";
-import {useState, useEffect} from "react";
+import {useEffect} from "react";
 import {BrowserRouter as Router} from "react-router-dom";
-import {getCoords} from "../servises/locationService";
 import {getForecast} from "../servises/apiService";
 import {cities} from "../utils/cities";
+import { useDispatch } from "react-redux";
+import {
+    forecastError,
+    forecastFetched,
+    forecastFetching,
+    getCurrentCity,
+    getSelectedCitiesFromLocalStorage,
+} from "../actions/action";
+import {getCoords} from "../servises/locationService";
 
 function App() {
-    const [selectedItems, setSelectedItems] = useState()
-    const [currentCity, setCurrentCity] = useState('')
-    const [forecast, setForecast] = useState({})
+    const dispatch = useDispatch()
 
-    const fetchCurrentForecast = async () => {
+    const fetchCurrentForecast = async() => {
+        dispatch(forecastFetching())
+
         const {latitude, longitude} = await getCoords()
-        const data = await getForecast({latitude, longitude})
-        setForecast(data)
-        setCurrentCity(data.city)
+
+
+        getForecast({latitude, longitude})
+            .then(data => dispatch(forecastFetched(data)))
+            .then(data => dispatch(getCurrentCity(data.city)))
+            .catch(() => dispatch(forecastError()))
     }
 
-    const fetchChosenForecast = async (cityName) => {
+    const fetchChosenForecast = (cityName) => {
         const chosenCity = cities.find(item => {
             return item.label === cityName
         })
         if (chosenCity) {
-            const data = await getForecast({latitude: chosenCity.latitude, longitude: chosenCity.longitude})
-            setForecast(data)
+            getForecast({latitude: chosenCity.latitude, longitude: chosenCity.longitude})
+                .then(data => {
+                    console.log(data);
+                    dispatch(forecastFetched(data))
+                })
+                .catch(() => dispatch(forecastError()))
         }
     }
+
 
     useEffect(() => {
         fetchCurrentForecast()
+        dispatch(getSelectedCitiesFromLocalStorage())
     }, [])
-
-
-    useEffect(() => {
-        let list = JSON.parse(localStorage.getItem('selectedItems')) || []
-        setSelectedItems(list)
-    }, [])
-
-    const addSelectedItemToLocalStorage = (id) => {
-        let list = JSON.parse(localStorage.getItem('selectedItems')) || []
-        if (list?.includes(id)) {
-            list = list.filter(el => el !== id)
-        } else {
-            list.push(id)
-        }
-        setSelectedItems(list)
-        localStorage.setItem('selectedItems', JSON.stringify(list))
-    }
 
 
     return (
         <Router>
             <div className="App">
-                <NavBar currentCity={currentCity} chosenCity={forecast.city}
-                        addSelectedItemToLocalStorage={addSelectedItemToLocalStorage}
-                        selectedItems={selectedItems}
-                        fetchCurrentForecast={fetchCurrentForecast}
-                        fetchChosenForecast={fetchChosenForecast}/>
+                <NavBar fetchChosenForecast={fetchChosenForecast} fetchCurrentForecast={fetchCurrentForecast}/>
                 <div>
                     <Header
-                        addSelectedItemToLocalStorage={addSelectedItemToLocalStorage}
-                        selectedItems={selectedItems}
                         fetchChosenForecast={fetchChosenForecast}
                     />
-                    <WholeContent forecast={forecast}/>
+                    <WholeContent/>
                 </div>
             </div>
         </Router>
