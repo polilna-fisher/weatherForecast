@@ -1,7 +1,6 @@
-
-export const getCoords = () => {
+export const getCoords = (): Promise<GeolocationCoordinates> => {
     return new Promise((res, rej) => {
-        const success = (position) => {
+        const success = (position: GeolocationPosition) => {
             res(position.coords)
         }
         const reject = () => {

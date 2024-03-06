@@ -6,10 +6,13 @@ import Pressure from "./img/pressure.png"
 import Wind from "./img/wind.png"
 import Humidity from "./img/humidity.png"
 import {useSelector} from "react-redux";
+import {IDailyForecast} from "../types/types";
 
 const DailyForecast = () => {
 
-    const {currentTemp, feelsLike, sunrise, sunset, weather, weatherIcon, humidity, windSpeed, pressure, uv} = useSelector(state => state.foreCast.forecast)
+    const {currentTemp, feelsLike, sunrise, sunset, weather,
+        weatherIcon, humidity, windSpeed, pressure, uv}:IDailyForecast =
+        useSelector((state:Record<string, any>) => state.foreCast.forecast)
     return(
         <div className="daily_container">
             <div className="daily_container_left">

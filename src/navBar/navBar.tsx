@@ -1,30 +1,38 @@
 import './navBar.sass'
+import {MouseEvent, useEffect} from 'react'
 import {cities} from "../utils/cities";
 import StarWhite from './img/star-white.svg'
 import StarYellow from './img/star-yellow.svg'
-import {useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    addOrRemoveFromLocalStorage,
-} from "../actions/action";
+import {FC, useRef} from "react";
+import {forecastActions} from "../redux/slice";
+import {ICity} from "../types/types";
+import {useAppDispatch, useAppSelector} from "../redux/store";
 
-const NavBar = ({ fetchChosenForecast, fetchCurrentForecast }) => {
-    const selectedCitiesList = useSelector(state => state.foreCast.selectedCitiesList)
-    const dispatch = useDispatch()
-    const currentCity = useSelector(state => state.foreCast.currentCity)
-    const city = useSelector(state => state.foreCast.forecast.city)
+interface NavBarProps {
+    fetchChosenForecast: (cityName: string) => void
+    fetchCurrentForecast: () => Promise<void>
+}
 
-    const onCityClick = (e, item) => {
+const NavBar:FC<NavBarProps> = ({ fetchChosenForecast, fetchCurrentForecast }) => {
+    const dispatch = useAppDispatch()
+
+    const selectedCitiesList: any = useAppSelector(state => state.foreCast.selectedCitiesList)
+    const currentCity:string | null = useAppSelector(state => state.foreCast.currentCity)
+    const city:string = useAppSelector(state => state.foreCast.forecast.city)
+
+    const onCityClick = (e: MouseEvent<HTMLAnchorElement>, item: ICity) => {
         e.preventDefault()
         fetchChosenForecast(item.label)
     }
-    const onCurrentCityClick = (e) => {
+    const onCurrentCityClick = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
         fetchCurrentForecast()
     }
 
-    const onCurrentLocationFocus = useRef(null)
 
+    const onCurrentLocationFocus = useRef<any>(null)
+
+    console.log(currentCity, 'curerent')
     return (
         <div className='nav_container'>
             <div>
@@ -52,8 +60,8 @@ const NavBar = ({ fetchChosenForecast, fetchCurrentForecast }) => {
                                            className={city===item.label ? 'nav_item_city_name text_shadow' : 'nav_item_city_name'}
                                         >{item.label}</a>
                                         <img className='nav_item_icon_selected'
-                                             alt='img' src={selectedCitiesList.includes(item.id) ? StarYellow : StarWhite}
-                                             onClick={() => dispatch(addOrRemoveFromLocalStorage(item.id))}/>
+                                             alt='img' src={selectedCitiesList?.includes(item.id) ? StarYellow : StarWhite}
+                                             onClick={() => dispatch(forecastActions.addOrRemoveFromLocalStorage(item.id))}/>
                                     </li>
                                 )
                             }

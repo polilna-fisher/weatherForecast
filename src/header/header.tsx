@@ -1,15 +1,19 @@
 import './header.sass'
-import {useState, useMemo, useRef} from "react";
+import {useState, useMemo, useRef, FC} from "react";
 import {cities} from "../utils/cities";
 import StarWhite from './img/star-white.svg'
 import StarYellow from './img/star-yellow.svg'
 import {useDispatch, useSelector} from "react-redux";
-import {addOrRemoveFromLocalStorage} from "../actions/action";
+import {forecastActions} from "../redux/slice";
 
-const Header = ({ fetchChosenForecast }) => {
+interface HeaderProps {
+    fetchChosenForecast: (cityName: string) => void
+}
+
+const Header: FC<HeaderProps> = ({ fetchChosenForecast }) => {
     const dispatch = useDispatch()
 
-    const selectedCitiesList = useSelector(state => state.foreCast.selectedCitiesList)
+    const selectedCitiesList = useSelector((state:Record<string, any>) => state.foreCast.selectedCitiesList)
     const [isListShown, setIsListShown] = useState(false)
     const [inputValue, setInputValue] = useState('')
 
@@ -66,7 +70,7 @@ const Header = ({ fetchChosenForecast }) => {
                                     }} className='autocomplete_item_star_img'
                                          alt='star'
                                          src={selectedCitiesList.includes(item.id) ? StarYellow : StarWhite}
-                                         onClick={() => dispatch(addOrRemoveFromLocalStorage(item.id))}
+                                         onClick={() => dispatch(forecastActions.addOrRemoveFromLocalStorage(item.id))}
                                     />
                                 </div>
 

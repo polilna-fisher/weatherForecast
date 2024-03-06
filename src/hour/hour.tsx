@@ -1,9 +1,13 @@
 import './hour.sass'
 import NavIcon from './img/navigation.png'
+import {IHour} from "../types/types";
+import {FC} from "react";
 
-const Hour = ({ time, icon, temperature, uv, humidity, feelsLike  }) => {
+interface HourProps extends IHour {}
+
+const Hour: FC<HourProps> = ({ time, icon, temperature, uv, feelsLike}) => {
     const shortenTime = (String(time)).split(' ')[1]
-    let backgroundColour
+    let backgroundColour:string = ''
     const morningBackground = 'rgba(255,230,203,0.65)'
     const dayBackground = 'rgba(248,133,8,0.66)'
     const nightBackground = 'rgba(68,61,100,0.65)'

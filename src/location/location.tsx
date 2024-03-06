@@ -1,9 +1,10 @@
 import {getDate, getTime} from "../utils/utils";
 import './location.sass'
 import {useSelector} from "react-redux";
+import {FC} from "react";
 
-const Location = () => {
-    const {city} = useSelector(state => state.foreCast.forecast)
+const Location:FC = () => {
+    const {city}:{city:string} = useSelector((state:Record<string, any>) => state.foreCast.forecast)
     return(
         <div className="location_container">
             <div className="location_date">{getDate()}</div>

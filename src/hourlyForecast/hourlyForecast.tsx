@@ -1,11 +1,12 @@
 import Hour from "../hour/hour";
 import './hourlyForecast.sass'
 import {useSelector} from "react-redux";
+import {FC} from "react";
+import {IShortForecast} from "../types/types";
 
-const HourlyForecast = () => {
-    const {hoursForecast} = useSelector(state =>state.foreCast.forecast)
-
-    const allowedTIme = {
+const HourlyForecast: FC = () => {
+    const {hoursForecast} = useSelector((state:Record<string, any>) =>state.foreCast.forecast)
+    const allowedTIme: Record<string, number> = {
         '04:00': 1,
         '06:00': 1,
         '08:00': 1,
@@ -17,15 +18,13 @@ const HourlyForecast = () => {
         '21:00': 1,
         '23:00': 1,
     }
-
-    const shortForecast = () => {
-         return  hoursForecast?.filter(hour => {
+    const shortForecast = ():IShortForecast[] => {
+         return  hoursForecast?.filter((hour: Record<string, any>) => {
              const time = (String(hour?.time)).split(' ')[1]
               return allowedTIme[time]
         })
 
     }
-
     return(
         <div className="hourly_container">
             {
@@ -36,7 +35,6 @@ const HourlyForecast = () => {
                             icon={hour?.condition?.icon}
                             temperature={hour?.temp_c}
                             uv={hour?.uv}
-                            humidity={hour?.humidity}
                             feelsLike={hour?.feelslike_c}
                             key={hour?.time}
                         />

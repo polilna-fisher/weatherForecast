@@ -1,20 +1,20 @@
 import {cities} from "./cities";
 
-const addZeroToShortNumber = (num) => {
-    if(Number(num) < 10){
+const addZeroToShortNumber = (num:number):string | number => {
+    if(num < 10){
         return `0${num}`
     }else{
         return num
     }
 }
 
-export const getTime = () => {
-    const hours = addZeroToShortNumber(new Date().getHours())
-    const minutes = addZeroToShortNumber(new Date().getMinutes())
+export const getTime = ():string => {
+    const hours = addZeroToShortNumber(Number(new Date().getHours()))
+    const minutes = addZeroToShortNumber(Number(new Date().getMinutes()))
     return `${hours}:${minutes}`
 }
 
-export const getDate = () => {
+export const getDate = ():string => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const weekDay = days[new Date().getDay()]
     const day = new Date().getDate()
@@ -22,9 +22,8 @@ export const getDate = () => {
     return `${weekDay}, ${day} ${monthName}`
 }
 
-export const translateCIty = (city) => {
+export const translateCIty = (city: string): string => {
     const translatedName = cities.find(item => {
-        console.log(123)
         return  item.cityName === city
     })
     if(!!translatedName){
