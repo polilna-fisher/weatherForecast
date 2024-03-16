@@ -6,13 +6,9 @@ import StarYellow from './img/star-yellow.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {forecastActions} from "../redux/slice";
 
-interface HeaderProps {
-    fetchChosenForecast: (cityName: string) => void
-}
 
-const Header: FC<HeaderProps> = ({ fetchChosenForecast }) => {
+const Header: FC = () => {
     const dispatch = useDispatch()
-
     const selectedCitiesList = useSelector((state:Record<string, any>) => state.foreCast.selectedCitiesList)
     const [isListShown, setIsListShown] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -24,7 +20,12 @@ const Header: FC<HeaderProps> = ({ fetchChosenForecast }) => {
     }, [inputValue])
 
     const sendLocationRequest = async () => {
-        fetchChosenForecast(inputValue)
+        const chosenCity = cities.find(city => {
+            return city.label === inputValue
+        })
+        if (chosenCity) {
+            dispatch(forecastActions.forecastFetch({ latitude: chosenCity.latitude, longitude: chosenCity.longitude }))
+        }
         setInputValue('')
     }
 
@@ -45,7 +46,7 @@ const Header: FC<HeaderProps> = ({ fetchChosenForecast }) => {
                         setIsListShown(true)
                     }}
                     onBlur={(event) => {
-                        if (listHideAllowed.current === true) {
+                        if (listHideAllowed.current) {
                             setIsListShown(false)
                         } else {
                             listHideAllowed.current = true

@@ -1,5 +1,5 @@
 import './navBar.sass'
-import {MouseEvent, useEffect} from 'react'
+import {MouseEvent} from 'react'
 import {cities} from "../utils/cities";
 import StarWhite from './img/star-white.svg'
 import StarYellow from './img/star-yellow.svg'
@@ -8,31 +8,30 @@ import {forecastActions} from "../redux/slice";
 import {ICity} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../redux/store";
 
-interface NavBarProps {
-    fetchChosenForecast: (cityName: string) => void
-    fetchCurrentForecast: () => Promise<void>
-}
-
-const NavBar:FC<NavBarProps> = ({ fetchChosenForecast, fetchCurrentForecast }) => {
+const NavBar:FC = () => {
     const dispatch = useAppDispatch()
 
     const selectedCitiesList: any = useAppSelector(state => state.foreCast.selectedCitiesList)
     const currentCity:string | null = useAppSelector(state => state.foreCast.currentCity)
-    const city:string = useAppSelector(state => state.foreCast.forecast.city)
+    const city:any = useAppSelector(state => state?.foreCast?.forecast?.city)
 
-    const onCityClick = (e: MouseEvent<HTMLAnchorElement>, item: ICity) => {
+
+    const onCityClick = (e: MouseEvent<HTMLAnchorElement>, item: ICity):void => {
         e.preventDefault()
-        fetchChosenForecast(item.label)
+        const chosenCity = cities.find(city => {
+            return city.label === item.label
+        })
+        if (chosenCity) {
+            dispatch(forecastActions.forecastFetch({ latitude: chosenCity.latitude, longitude: chosenCity.longitude }))
+        }
     }
     const onCurrentCityClick = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
-        fetchCurrentForecast()
+        dispatch(forecastActions.forecastFetch())
     }
 
 
     const onCurrentLocationFocus = useRef<any>(null)
-
-    console.log(currentCity, 'curerent')
     return (
         <div className='nav_container'>
             <div>
@@ -44,7 +43,7 @@ const NavBar:FC<NavBarProps> = ({ fetchChosenForecast, fetchCurrentForecast }) =
             {
                 !!city && city !== currentCity && <div>
                     <h3 className='nav_header'>Chosen location: </h3>
-                    <div className='nav_header_current_location'>{ city }</div>
+                    <div className='nav_header_current_location'>{city}</div>
                 </div>
             }
 

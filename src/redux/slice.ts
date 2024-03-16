@@ -1,33 +1,41 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {IForecast, InitialState} from "../types/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ForecastCurrentFetchPayload, IForecast, InitialState} from "../types/types";
 
 const initialState: InitialState = {
-    loading: 'isLoading',
+    loading: true,
+    error: false,
     forecast: {} as IForecast,
     selectedCitiesList: [],
     currentCity: null,
+    chosenCity: null
 }
 
-const forecastSlice = createSlice(
+export const forecastSlice = createSlice(
     {
         name: 'forecast',
         initialState,
         reducers: {
-            forecastFetching: state => {
-                state.loading = 'isLoading'
+            forecastFetch: (state, _action: PayloadAction<ForecastCurrentFetchPayload>) => {
+                state.loading = true;
+                state.error = false
             },
-            forecastFetched: (state, action) => {
-                state.loading = 'isLoaded';
-                state.forecast = action.payload
+            forecastFetchSuccess: (state, action) => {
+                state.loading = false;
+                state.error = false;
+                state.forecast = action.payload;
             },
-            forecastError: state => {
-                state.loading = 'isError'
+            forecastFetchError: (state) => {
+                state.loading = false
+                state.error = true
             },
             selectedCities: (state, action) => {
                 state.selectedCitiesList = action.payload
             },
             setCurrentCity: (state, action) => {
                 state.currentCity = action.payload
+            },
+            setChosenCity: (state, action) => {
+                state.chosenCity = action.payload
             },
             addOrRemoveFromLocalStorage: (state, action) => {
                 let list = JSON.parse(localStorage.getItem('selectedItems') || '[]')
@@ -50,4 +58,4 @@ const forecastSlice = createSlice(
 
 export default forecastSlice.reducer
 
-export const forecastActions =  forecastSlice.actions
+export const forecastActions = forecastSlice.actions

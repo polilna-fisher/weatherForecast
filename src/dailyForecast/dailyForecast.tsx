@@ -7,8 +7,9 @@ import Wind from "./img/wind.png"
 import Humidity from "./img/humidity.png"
 import {useSelector} from "react-redux";
 import {IDailyForecast} from "../types/types";
+import {FC} from "react";
 
-const DailyForecast = () => {
+const DailyForecast:FC = () => {
 
     const {currentTemp, feelsLike, sunrise, sunset, weather,
         weatherIcon, humidity, windSpeed, pressure, uv}:IDailyForecast =
