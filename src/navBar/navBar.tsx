@@ -7,13 +7,18 @@ import {FC, useRef} from "react";
 import {forecastActions} from "../redux/slice";
 import {ICity} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../redux/store";
+import Spinner from "../spinner/spinner";
+import ErrorMessage from "../error/error";
 
 const NavBar:FC = () => {
+
     const dispatch = useAppDispatch()
 
     const selectedCitiesList: any = useAppSelector(state => state.foreCast.selectedCitiesList)
     const currentCity:string | null = useAppSelector(state => state.foreCast.currentCity)
     const city:any = useAppSelector(state => state?.foreCast?.forecast?.city)
+    const isLoading:boolean = useAppSelector(state => state.foreCast.loading)
+    const isError:boolean = useAppSelector(state => state.foreCast.error)
 
 
     const onCityClick = (e: MouseEvent<HTMLAnchorElement>, item: ICity):void => {
@@ -32,13 +37,22 @@ const NavBar:FC = () => {
 
 
     const onCurrentLocationFocus = useRef<any>(null)
+
+
+    const loading = isLoading ? <Spinner/> : null
+    const error = isError ? <ErrorMessage/> : null
+    const content = (isLoading || isError) ? null : <a className='nav_header_current_location text_shadow'
+                                                       ref={onCurrentLocationFocus}
+                                                       onClick={(e) => onCurrentCityClick(e)}>
+                                                    {currentCity}</a>
     return (
         <div className='nav_container'>
             <div>
                 <h3 className='nav_header'>Current location: </h3>
-                <a className='nav_header_current_location text_shadow'
-                   ref={onCurrentLocationFocus}
-                   onClick={(e) => onCurrentCityClick(e)}>{currentCity}</a>
+                {loading}
+                {content}
+                {error}
+
             </div>
             {
                 !!city && city !== currentCity && <div>

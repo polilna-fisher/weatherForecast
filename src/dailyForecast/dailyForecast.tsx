@@ -8,12 +8,21 @@ import Humidity from "./img/humidity.png"
 import {useSelector} from "react-redux";
 import {IDailyForecast} from "../types/types";
 import {FC} from "react";
+import {useAppSelector} from "../redux/store";
+import Spinner from "../spinner/spinner";
+import ErrorMessage from "../error/error";
 
 const DailyForecast:FC = () => {
-
+    const isLoading:boolean = useAppSelector(state => state.foreCast.loading)
+    const isError:boolean = useAppSelector(state => state.foreCast.error)
     const {currentTemp, feelsLike, sunrise, sunset, weather,
         weatherIcon, humidity, windSpeed, pressure, uv}:IDailyForecast =
         useSelector((state:Record<string, any>) => state.foreCast.forecast)
+
+    const loading = isLoading ? <Spinner/> : null
+    const error = isError ? <ErrorMessage/> : null
+    const content = (isLoading || isError) ? null : <img className="weather_icon" alt="weather" src={weatherIcon}/>
+
     return(
         <div className="daily_container">
             <div className="daily_container_left">
@@ -44,7 +53,9 @@ const DailyForecast:FC = () => {
                 </div>
             </div>
             <div className="daily_container_center">
-                <img className="weather_icon" alt="weather" src={weatherIcon}/>
+                {loading}
+                {error}
+                {content}
                 <div className="weather_description">{weather}</div>
             </div>
             <div className="daily_container_right">
